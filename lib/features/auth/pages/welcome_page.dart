@@ -1,214 +1,287 @@
 import 'package:flutter/material.dart';
-import 'package:heylo/features/auth/pages/login_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:heylo/theme/app_pallete.dart';
+import 'package:heylo/features/auth/pages/login_page.dart';
 
-class WelcomePage extends StatelessWidget {
+class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
+
+  @override
+  State<WelcomePage> createState() => _WelcomePageState();
+}
+
+class _WelcomePageState extends State<WelcomePage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeOut,
+    );
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void navigateToLogin(BuildContext context) {
+    Navigator.pushNamed(context, LoginPage.routeName);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppPallete.background,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(32.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                // Spacing from top
-                const SizedBox(height: 80),
+      body: Stack(
+        children: [
+          // Background Tech Grid
+          const GridPainterWidget(),
 
-                // Title and Features
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Heylo Title with Glow Effect
+                     const SizedBox(height: 80),
+
+                    // App Identity Tag
                     Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppPallete.primary.withOpacity(0.1),
-                            blurRadius: 20,
-                            spreadRadius: 0,
-                          ),
-                        ],
+                        border: Border.all(
+                          color: AppPallete.primary.withOpacity(0.3),
+                        ),
+                        borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        'Heylo',
-                        style: TextStyle(
-                          fontSize: 56,
+                        'HEYLO....../',
+                        style: GoogleFonts.inter(
+                          fontSize: 10,
                           fontWeight: FontWeight.bold,
                           color: AppPallete.primary,
                           letterSpacing: 2,
                         ),
                       ),
                     ),
-                    const SizedBox(height: 60),
+                    const SizedBox(height: 24),
 
-                    // Feature Cards
-                    Column(
-                      spacing: 32,
+                    // Main Header
+                    Text(
+                      'YOUR\nWORLD,\nSYNCHRONIZED.',
+                      style: GoogleFonts.spaceGrotesk(
+                        fontSize: 52,
+                        height: 0.9,
+                        fontWeight: FontWeight.w900,
+                        color: AppPallete.onSurface,
+                        letterSpacing: -2,
+                      ),
+                    ),
+
+                    const SizedBox(height: 48),
+
+                    // App Features (Replacing Technical Jargon)
+                    _buildHudItem(
+                      'PRIVATE & SECURE',
+                      'End-to-end encrypted messaging soul.',
+                    ),
+                    _buildHudItem(
+                      'INSTANT DELIVERY',
+                      'Real-time communication at your fingertips.',
+                    ),
+                    _buildHudItem(
+                      'SEAMLESS SYNC',
+                      'Access your chats anywhere, anytime.',
+                    ),
+
+                    const Spacer(),
+
+                    // Action Section
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
-                        FeatureCard(
-                          icon: Icons.chat_bubble_outline,
-                          title: 'Instant Messaging',
-                          subtitle: 'Connect with friends instantly',
-                        ),
-                        FeatureCard(
-                          icon: Icons.shield_outlined,
-                          title: 'Secure & Private',
-                          subtitle: 'End-to-end encryption',
-                        ),
-                        FeatureCard(
-                          icon: Icons.bolt,
-                          title: 'Lightning Fast',
-                          subtitle: 'Real-time communication',
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // Text(
+                              //   '0.014s / UPLINK_ESTABLISHED',
+                              //   style: GoogleFonts.inter(
+                              //     fontSize: 10,
+                              //     color: AppPallete.onSurfaceVariant,
+                              //     letterSpacing: 1,
+                              //   ),
+                              // ),
+                              const SizedBox(height: 12),
+                              GestureDetector(
+                                onTap: () => navigateToLogin(context),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 20,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border(
+                                      top: BorderSide(
+                                        color: AppPallete.primary.withOpacity(
+                                          0.5,
+                                        ),
+                                      ),
+                                      bottom: BorderSide(
+                                        color: AppPallete.primary.withOpacity(
+                                          0.5,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        'START CHATTING',
+                                        style: GoogleFonts.spaceGrotesk(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: AppPallete.primary,
+                                          letterSpacing: 4,
+                                        ),
+                                      ),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 16,
+                                        color: AppPallete.primary,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
+                    const SizedBox(height: 40),
                   ],
                 ),
-
-                const SizedBox(height: 60),
-
-                // Get Started Button and Footer
-                Column(
-                  children: [
-                    SizedBox(
-                      width: double.infinity,
-                      height: 54,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()));
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('Get Started tapped')),
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppPallete.primary,
-                          foregroundColor: AppPallete.primaryForeground,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 0,
-                        ),
-                        child: const Text(
-                          'Get Started',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5,
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-
-                    // Terms and Privacy
-                    RichText(
-                      textAlign: TextAlign.center,
-                      text: TextSpan(
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: AppPallete.mutedForeground,
-                          height: 1.5,
-                        ),
-                        children: [
-                          const TextSpan(text: 'By continuing, you agree to our '),
-                          TextSpan(
-                            text: 'Terms & Privacy\nPolicy',
-                            style: TextStyle(
-                              color: AppPallete.primary,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+
+          // Floating Minimalist Elements
+          Positioned(
+            top: 100,
+            right: 40,
+            child: _buildFloatingCoord('VER: 1.0.0', 'BUILD: 2026'),
+          ),
+        ],
       ),
+    );
+  }
+
+  Widget _buildHudItem(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 24.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Container(width: 4, height: 4, color: AppPallete.primary),
+              const SizedBox(width: 8),
+              Text(
+                label,
+                style: GoogleFonts.inter(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  color: AppPallete.onSurfaceVariant,
+                  letterSpacing: 2,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 4),
+          Text(
+            value,
+            style: GoogleFonts.spaceGrotesk(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppPallete.onSurface.withOpacity(0.8),
+              letterSpacing: 0.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFloatingCoord(String tag1, String tag2) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          tag1,
+          style: GoogleFonts.inter(
+            fontSize: 8,
+            color: AppPallete.primary.withAlpha(100),
+            letterSpacing: 1,
+          ),
+        ),
+        Text(
+          tag2,
+          style: GoogleFonts.inter(
+            fontSize: 8,
+            color: AppPallete.primary.withAlpha(100),
+            letterSpacing: 1,
+          ),
+        ),
+      ],
     );
   }
 }
 
-class FeatureCard extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String subtitle;
-
-  const FeatureCard({
-    Key? key,
-    required this.icon,
-    required this.title,
-    required this.subtitle,
-  }) : super(key: key);
+class GridPainterWidget extends StatelessWidget {
+  const GridPainterWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // Icon Card - Small Elevated Card
-        Container(
-          width: 48,
-          height: 48,
-          decoration: BoxDecoration(
-            color: AppPallete.cardElevated,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: AppPallete.primary.withOpacity(0.2),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.3),
-                blurRadius: 8,
-              ),
-            ],
-          ),
-          child: Center(
-            child: Icon(
-              icon,
-              color: AppPallete.primary,
-              size: 24,
-            ),
-          ),
-        ),
-        const SizedBox(width: 16),
-
-        // Text Content
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: AppPallete.foreground,
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                subtitle,
-                style: TextStyle(
-                  fontSize: 13,
-                  color: AppPallete.mutedForeground,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ],
-          ),)
-      ],
-    );
+    return CustomPaint(size: Size.infinite, painter: TechGridPainter());
   }
+}
+
+class TechGridPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = AppPallete.primary.withOpacity(0.05)
+      ..strokeWidth = 1.0;
+
+    const step = 40.0;
+
+    for (double i = 0; i < size.width; i += step) {
+      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
+    }
+
+    for (double i = 0; i < size.height; i += step) {
+      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

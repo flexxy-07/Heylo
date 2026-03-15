@@ -1,53 +1,67 @@
 import 'package:flutter/material.dart';
 
 class AppPallete {
-  // Primary Colors
-  static const Color primary = Color(0xFF7CFF00); // neon-green
-  static const Color accent = Color(0xFF7CFF00);
+  // Brand Colors
+  static const Color primary = Color(0xFF49F6D8); // neon pulse
+  static const Color primaryContainer = Color(0xFF06D9BC);
+  static const Color primaryDim = Color(0xFF31E7CA);
+  
+  static const Color secondary = Color(0xFF3CFBF0);
+  static const Color secondaryContainer = Color(0xFF006A65);
+  static const Color secondaryDim = Color(0xFF1BEDE2);
+  
+  static const Color tertiary = Color(0xFF65D0FF);
+  static const Color tertiaryContainer = Color(0xFF0EC4FE);
 
-  // Background Colors
-  static const Color background = Color(0xFF0a0a0a);
-  static const Color card = Color(0xFF141414);
-  static const Color cardElevated = Color(0xFF1f1f1f);
-  static const Color muted = Color(0xFF2a2a2a);
-  static const Color input = Color(0xFF1f1f1f);
-  static const Color popover = Color(0xFF1a1a1a);
-  static const Color secondary = Color(0xFF1f1f1f);
-  static const Color sidebar = Color(0xFF0a0a0a);
+  // Surface Philosophy: Deep Luminous Void
+  static const Color background = Color(0xFF0B0F0F);
+  static const Color surface = Color(0xFF0B0F0F);
+  
+  // Surface Hierarchy
+  static const Color surfaceContainerLowest = Color(0xFF000000);
+  static const Color surfaceContainerLow = Color(0xFF101414);
+  static const Color surfaceContainer = Color(0xFF161A1A);
+  static const Color surfaceContainerHigh = Color(0xFF1B2121);
+  static const Color surfaceContainerHighest = Color(0xFF212727);
+  static const Color surfaceBright = Color(0xFF272D2D);
+  static const Color surfaceVariant = Color(0xFF212727);
 
-  // Text/Foreground Colors
-  static const Color foreground = Color(0xFFe5e5e5);
-  static const Color cardForeground = Color(0xFFe5e5e5);
-  static const Color popoverForeground = Color(0xFFe5e5e5);
-  static const Color secondaryForeground = Color(0xFFe5e5e5);
-  static const Color mutedForeground = Color(0xFF888888);
-  static const Color primaryForeground = Color(0xFF0a0a0a);
-  static const Color sidebarForeground = Color(0xFFe5e5e5);
+  // Foreground / Text (Inter)
+  static const Color foreground = Color(0xFFFAFDFC);
+  static const Color onBackground = Color(0xFFFAFDFC);
+  static const Color onSurface = Color(0xFFFAFDFC);
+  static const Color onSurfaceVariant = Color(0xFFA8ACAB);
+  
+  static const Color onPrimary = Color(0xFF00594C);
+  static const Color onPrimaryContainer = Color(0xFF00453B);
+  static const Color onSecondary = Color(0xFF005C57);
+  static const Color onTertiary = Color(0xFF00445A);
 
-  // Semantic Colors
-  static const Color destructive = Color(0xFFff4444);
-  static const Color destructiveForeground = Color(0xFFffffff);
-  static const Color border = Color(0xFF1f1f1f); // rgba(124, 255, 0, 0.1)
-  static const Color ring = Color(0xFF4a4a4a); // rgba(124, 255, 0, 0.5)
+  // Semantic & Feedback
+  static const Color error = Color(0xFFFF716C);
+  static const Color onError = Color(0xFF490006);
+  static const Color errorContainer = Color(0xFF9F0519);
+  
+  static const Color outline = Color(0xFF727676);
+  static const Color outlineVariant = Color(0xFF454948); // Use at 15% opacity for ghost borders
 
-  // Chart Colors
-  static const Color chart1 = Color(0xFF7CFF00);
-  static const Color chart2 = Color(0xFF00ff9f);
-  static const Color chart3 = Color(0xFF00d4ff);
-  static const Color chart4 = Color(0xFFff00d4);
-  static const Color chart5 = Color(0xFFffd400);
+  // Multi-tier Shadows (Ambient Glow)
+  static Color ambientGlow(Color color) => color.withOpacity(0.04);
 
-  // Neon Glow Effects
-  static const Color neonGreen = Color(0xFF7CFF00);
-  static const Color neonGreenGlow = Color(0xFF4d7f00); // rgba(124, 255, 0, 0.3)
+  // Signature Gradients
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [primary, primaryContainer],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0.0, 1.0],
+  );
 
-  // Aliases for backward compatibility
-  static const Color darkBackground = Color(0xFF0a0a0a);
-  static const Color cardBackground = Color(0xFF141414);
-  static const Color surfaceDark = Color(0xFF1f1f1f);
-  static const Color textWhite = Color(0xFFe5e5e5);
-  static const Color textGrey = Color(0xFF888888);
-  static const Color textGreyDark = Color(0xFF666666);
-  static const Color textBlack = Color(0xFF0a0a0a);
-  static const Color error = Color(0xFFff4444);
+  static const LinearGradient glassGradient = LinearGradient(
+    colors: [
+      Color(0x33212727), // surface-variant at 20%
+      Color(0x1A212727), // surface-variant at 10%
+    ],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
 }
