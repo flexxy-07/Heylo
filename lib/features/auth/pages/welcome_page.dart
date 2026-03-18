@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heylo/theme/app_pallete.dart';
 import 'package:heylo/features/auth/pages/login_page.dart';
+import 'package:heylo/common/widgets/tech_grid.dart';
 
 class WelcomePage extends StatefulWidget {
   const WelcomePage({Key? key}) : super(key: key);
@@ -46,7 +47,7 @@ class _WelcomePageState extends State<WelcomePage>
       body: Stack(
         children: [
           // Background Tech Grid
-          const GridPainterWidget(),
+          const TechGrid(),
 
           SafeArea(
             child: Padding(
@@ -255,33 +256,3 @@ class _WelcomePageState extends State<WelcomePage>
   }
 }
 
-class GridPainterWidget extends StatelessWidget {
-  const GridPainterWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(size: Size.infinite, painter: TechGridPainter());
-  }
-}
-
-class TechGridPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = AppPallete.primary.withOpacity(0.05)
-      ..strokeWidth = 1.0;
-
-    const step = 40.0;
-
-    for (double i = 0; i < size.width; i += step) {
-      canvas.drawLine(Offset(i, 0), Offset(i, size.height), paint);
-    }
-
-    for (double i = 0; i < size.height; i += step) {
-      canvas.drawLine(Offset(0, i), Offset(size.width, i), paint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
-}
