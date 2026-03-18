@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heylo/features/auth/controller/auth_controller.dart';
+import 'package:heylo/features/auth/pages/user_information_page.dart';
+import 'package:heylo/features/profile/controller/profile_controller.dart';
 import 'package:heylo/theme/app_pallete.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -50,11 +52,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     // Navigate to next screen on success
     if (mounted) {
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/chats',
-        (route) => false,
-      );
+      final user = ref.read(authRepositoryProvider).getCurrentUser();
+      if (user != null) {
+        final userData = await ref.read(profileControllerProvider).getUserData();
+        if (userData == null) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            UserInformationPage.routeName,
+            (route) => false,
+          );
+        } else {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            '/chats',
+            (route) => false,
+          );
+        }
+      }
     }
   }
 

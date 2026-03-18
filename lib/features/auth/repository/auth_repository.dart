@@ -1,4 +1,9 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:heylo/common/utils/utils.dart';
+import 'package:heylo/services/cloudinary_service.dart';
 
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -23,6 +28,30 @@ class AuthRepository {
       );
     } catch (e) {
       throw Exception('Sign in failed: $e');
+    }
+  }
+
+  void saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required String bio,
+   // required ProviderRef ref,
+    
+    required BuildContext context,
+  }) async {
+    try {
+      String uid = _firebaseAuth.currentUser!.uid;
+      String photoUrl = '';
+      if (profilePic != null) {
+        // Upload profile picture to Cloudinary and get URL
+        final cloudinaryService = CloudinaryService();
+        photoUrl = await cloudinaryService.uploadProfileImage(
+          file: profilePic,
+          folder: 'heylo/profile_images',
+        );
+      }
+    } catch (e) {
+      showSnackBar(context: context, message: e.toString());
     }
   }
 

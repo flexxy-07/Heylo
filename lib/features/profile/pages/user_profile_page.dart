@@ -27,7 +27,10 @@ class UserProfilePage extends StatelessWidget {
                           color: AppPallete.surfaceContainer,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: const Icon(Icons.arrow_back, color: AppPallete.onSurface),
+                        child: const Icon(
+                          Icons.arrow_back,
+                          color: AppPallete.onSurface,
+                        ),
                       ),
                     ),
                     Text(
@@ -49,9 +52,9 @@ class UserProfilePage extends StatelessWidget {
                   ],
                 ),
               ),
-              
+
               const SizedBox(height: 20),
-              
+
               // Profile Image with Glow
               Container(
                 width: 140,
@@ -79,9 +82,9 @@ class UserProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 24),
-              
+
               Text(
                 'Sarah Jenkins',
                 style: GoogleFonts.spaceGrotesk(
@@ -97,25 +100,25 @@ class UserProfilePage extends StatelessWidget {
                   color: AppPallete.onSurfaceVariant,
                 ),
               ),
-              
+
               const SizedBox(height: 40),
-              
+
               // Settings Groups
               _buildSettingsGroup([
                 _buildSettingsItem(Icons.person_outline, 'Account Information'),
                 _buildSettingsItem(Icons.notifications_none, 'Notifications'),
                 _buildSettingsItem(Icons.lock_outline, 'Privacy & Security'),
               ]),
-              
+
               const SizedBox(height: 24),
-              
+
               _buildSettingsGroup([
                 _buildSettingsItem(Icons.help_outline, 'Help & Support'),
                 _buildSettingsItem(Icons.info_outline, 'About Heylo'),
               ]),
-              
+
               const SizedBox(height: 40),
-              
+
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
@@ -130,7 +133,7 @@ class UserProfilePage extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               const SizedBox(height: 40),
             ],
           ),
@@ -146,9 +149,7 @@ class UserProfilePage extends StatelessWidget {
         color: AppPallete.surfaceContainerLow,
         borderRadius: BorderRadius.circular(24),
       ),
-      child: Column(
-        children: items,
-      ),
+      child: Column(children: items),
     );
   }
 
@@ -169,7 +170,11 @@ class UserProfilePage extends StatelessWidget {
               ),
             ),
           ),
-          const Icon(Icons.chevron_right, color: AppPallete.onSurfaceVariant, size: 20),
+          const Icon(
+            Icons.chevron_right,
+            color: AppPallete.onSurfaceVariant,
+            size: 20,
+          ),
         ],
       ),
     );

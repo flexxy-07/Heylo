@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heylo/features/auth/pages/splash_screen.dart';
-import 'package:heylo/firebase_options.dart';
 import 'package:heylo/router.dart';
 import 'package:heylo/theme/heylo_theme.dart';
 
@@ -13,9 +12,7 @@ Future<void> main() async {
   // Load environment variables from .env file
   await dotenv.load(fileName: '.env');
   
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp();
   runApp(const ProviderScope(child: MyApp()));
 }
 

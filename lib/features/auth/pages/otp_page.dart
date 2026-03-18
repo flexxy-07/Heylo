@@ -44,11 +44,7 @@ class _OtpPageState extends ConsumerState<OtpPage> {
     setState(() => _isLoading = true);
 
     final authController = ref.read(authControllerProvider);
-    // await authController.verifyOTP(
-    //   context,
-    //   verificationId,
-    //   otp,
-    // );
+    
 
     setState(() => _isLoading = false);
 
