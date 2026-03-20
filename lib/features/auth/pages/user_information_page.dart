@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heylo/common/utils/utils.dart';
+import 'package:heylo/features/auth/controller/auth_controller.dart';
 import 'package:heylo/features/profile/controller/profile_controller.dart';
 import 'package:heylo/theme/app_pallete.dart';
 import 'package:image_picker/image_picker.dart';
@@ -34,13 +35,14 @@ class _UserInformationPageState extends ConsumerState<UserInformationPage> {
   }
 
   void storeUserData() async {
+    print("🟢 continue button tapped");
     String name = nameController.text.trim();
     String bio = bioController.text.trim();
 
     if (name.isNotEmpty) {
-      ref
-          .read(profileControllerProvider)
-          .saveUserDataToFirebase(context, name, bio, image);
+      await ref
+          .read(authControllerProvider)
+          .saveUserDataToFirebase(context: context, name: name, bio: bio, profilePic: image);
     } else {
       showSnackBar(context: context, message: 'Please enter your name');
     }

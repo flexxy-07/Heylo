@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:heylo/common/utils/utils.dart';
@@ -76,6 +78,25 @@ class AuthController {
         context: context,
         message: 'Sign in failed: $e',
       );
+    }
+  }
+
+  Future<void> saveUserDataToFirebase({
+    required String name,
+    required File? profilePic,
+    required String bio,
+    required BuildContext context,
+  }) async {
+    final isSuccess = await _authRepository.saveUserDataToFirebase(
+      name: name,
+      profilePic: profilePic,
+      bio: bio,
+      context: context,
+    );
+
+    if (isSuccess && context.mounted) {
+      // Navigate to chat home page
+      Navigator.pushReplacementNamed(context, '/chats');
     }
   }
 }
