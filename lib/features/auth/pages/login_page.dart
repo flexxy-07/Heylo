@@ -40,34 +40,40 @@ class _LoginPageState extends ConsumerState<LoginPage> {
 
     setState(() => _isLoading = true);
 
-    final authController = ref.read(authControllerProvider);
+    try {
+      final authController = ref.read(authControllerProvider);
 
-    if (_isSignUp) {
-      await authController.signUpWithEmail(context, email, password);
-    } else {
-      await authController.signInWithEmail(context, email, password);
-    }
-
-    setState(() => _isLoading = false);
-
-    // Navigate to next screen on success
-    if (mounted) {
-      final user = ref.read(authRepositoryProvider).getCurrentUser();
-      if (user != null) {
-        final userData = await ref.read(profileControllerProvider).getUserData();
-        if (userData == null) {
+      if (_isSignUp) {
+        final success = await authController.signUpWithEmail(context, email, password);
+        // New user after sign up - go to profile setup
+        if (success && mounted) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             UserInformationPage.routeName,
             (route) => false,
           );
-        } else {
+        }
+      } else {
+        final success = await authController.signInWithEmail(context, email, password);
+        // Existing user after sign in - go to chats directly
+        // (profile should already exist)
+        if (success && mounted) {
           Navigator.pushNamedAndRemoveUntil(
             context,
             '/chats',
             (route) => false,
           );
         }
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Authentication failed: $e')),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
       }
     }
   }

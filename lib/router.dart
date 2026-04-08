@@ -5,6 +5,7 @@ import 'package:heylo/features/auth/pages/user_information_page.dart';
 import 'package:heylo/features/chat/pages/chats_home_page.dart';
 import 'package:heylo/features/chat/pages/active_chat_page.dart';
 import 'package:heylo/features/profile/pages/user_profile_page.dart';
+import 'package:heylo/features/select_contacts/pages/select_contact_screen.dart';
 
 Route<dynamic> generateRoute(RouteSettings settings){
   switch(settings.name){
@@ -22,6 +23,11 @@ Route<dynamic> generateRoute(RouteSettings settings){
 
     case UserInformationPage.routeName:
       return MaterialPageRoute(builder: (context) => const UserInformationPage());
+
+    case SelectContactScreen.routeName:
+      return MaterialPageRoute(builder: (context) => const SelectContactScreen());
+
+    
 
     default:
       return MaterialPageRoute(builder: (context) =>  Scaffold(

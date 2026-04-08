@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:heylo/features/auth/controller/auth_controller.dart';
+import 'package:heylo/features/auth/pages/welcome_page.dart';
 import 'package:heylo/theme/app_pallete.dart';
 
-class UserProfilePage extends StatelessWidget {
+class UserProfilePage extends ConsumerWidget {
   static const String routeName = '/profile';
   const UserProfilePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       backgroundColor: AppPallete.background,
       body: SafeArea(
@@ -122,7 +125,17 @@ class UserProfilePage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    final authController = ref.read(authControllerProvider);
+                    await authController.logout(context);
+                    if (context.mounted) {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => const WelcomePage()),
+                        (route) => false,
+                      );
+                    }
+                  },
                   child: Text(
                     'LOGOUT',
                     style: GoogleFonts.inter(

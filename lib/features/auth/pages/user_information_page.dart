@@ -20,6 +20,8 @@ class UserInformationPage extends ConsumerStatefulWidget {
 class _UserInformationPageState extends ConsumerState<UserInformationPage> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController bioController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+
   File? image;
 
   @override
@@ -27,6 +29,7 @@ class _UserInformationPageState extends ConsumerState<UserInformationPage> {
     super.dispose();
     nameController.dispose();
     bioController.dispose();
+    phoneController.dispose();
   }
 
   void selectImage() async {
@@ -38,11 +41,18 @@ class _UserInformationPageState extends ConsumerState<UserInformationPage> {
     print("🟢 continue button tapped");
     String name = nameController.text.trim();
     String bio = bioController.text.trim();
+    String phoneNumber = phoneController.text.trim();
 
     if (name.isNotEmpty) {
       await ref
           .read(authControllerProvider)
-          .saveUserDataToFirebase(context: context, name: name, bio: bio, profilePic: image);
+          .saveUserDataToFirebase(
+            context: context,
+            name: name,
+            bio: bio,
+            profilePic: image,
+            phoneNumber: phoneNumber, 
+          );
     } else {
       showSnackBar(context: context, message: 'Please enter your name');
     }
@@ -143,6 +153,14 @@ class _UserInformationPageState extends ConsumerState<UserInformationPage> {
                   style: GoogleFonts.inter(color: AppPallete.onSurface),
                   decoration: const InputDecoration(
                     hintText: 'Enter your name',
+                  ),
+                ),
+                const SizedBox(height: 24),
+                TextField(
+                  controller: phoneController,
+                  style: GoogleFonts.inter(color: AppPallete.onSurface),
+                  decoration: const InputDecoration(
+                    hintText: 'Enter Phone Number',
                   ),
                 ),
                 const SizedBox(height: 24),

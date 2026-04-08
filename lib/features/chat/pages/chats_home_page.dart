@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:heylo/theme/app_pallete.dart';
 import 'package:heylo/common/widgets/tech_grid.dart';
+import 'package:heylo/features/select_contacts/pages/select_contact_screen.dart';
 
 class ChatsHomePage extends StatelessWidget {
   static const String routeName = '/chats';
@@ -62,7 +63,19 @@ class ChatsHomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNav(),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(bottom: 16.0, right: 8.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(context, SelectContactScreen.routeName);
+          },
+          backgroundColor: AppPallete.primary,
+          elevation: 8,
+          child: const Icon(Icons.comment, color: AppPallete.background),
+        ),
+      ),
+      bottomNavigationBar: _buildBottomNav(context),
     );
   }
 
@@ -115,22 +128,67 @@ class ChatsHomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              // Glassmorphic Search Button
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  color: AppPallete.surfaceContainerLow.withOpacity(0.5),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: AppPallete.outlineVariant.withOpacity(0.15),
+              // Right side actions
+              Row(
+                children: [
+                  // Glassmorphic Search Button
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: AppPallete.surfaceContainerLow.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppPallete.outlineVariant.withOpacity(0.15),
+                      ),
+                    ),
+                    child: const Icon(
+                      Icons.search,
+                      color: AppPallete.primary,
+                      size: 24,
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.search,
-                  color: AppPallete.primary,
-                  size: 24,
-                ),
+                  const SizedBox(width: 8),
+                  // Profile/Logout Menu
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: AppPallete.surfaceContainerLow.withOpacity(0.5),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: AppPallete.outlineVariant.withOpacity(0.15),
+                      ),
+                    ),
+                    child: PopupMenuButton<String>(
+                      icon: const Icon(
+                        Icons.more_vert,
+                        color: AppPallete.primary,
+                        size: 24,
+                      ),
+                      color: AppPallete.surfaceContainer,
+                      onSelected: (value) {
+                        if (value == 'profile') {
+                          Navigator.pushNamed(context, '/profile');
+                        } else if (value == 'logout') {
+                          // Quick inline logout instead
+                          Navigator.pushNamed(context, '/profile'); // user can logout from profile page, or we can use ref here but it's a StatelessWidget. Let's convert if needed.
+                        }
+                      },
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem<String>(
+                            value: 'profile',
+                            child: Text(
+                              'Profile & Logout',
+                              style: GoogleFonts.inter(color: AppPallete.onSurface),
+                            ),
+                          ),
+                        ];
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -287,7 +345,7 @@ class ChatsHomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomNav() {
+  Widget _buildBottomNav(BuildContext context) {
     return Container(
       height: 90,
       decoration: BoxDecoration(
@@ -299,37 +357,42 @@ class ChatsHomePage extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _buildNavItem(Icons.chat_bubble_rounded, true),
-          _buildNavItem(Icons.adjust_rounded, false), // Status icon
-          _buildNavItem(Icons.person_rounded, false),
-          _buildNavItem(Icons.settings_rounded, false),
+          _buildNavItem(Icons.chat_bubble_rounded, true, () {}),
+          _buildNavItem(Icons.adjust_rounded, false, () {}), // Status icon
+          _buildNavItem(Icons.person_rounded, false, () {
+            Navigator.pushNamed(context, '/profile');
+          }),
+          _buildNavItem(Icons.settings_rounded, false, () {}),
         ],
       ),
     );
   }
 
-  Widget _buildNavItem(IconData icon, bool isActive) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(
-          icon,
-          color: isActive
-              ? AppPallete.primary
-              : AppPallete.onSurfaceVariant.withOpacity(0.5),
-          size: 26,
-        ),
-        if (isActive)
-          Container(
-            margin: const EdgeInsets.only(top: 6),
-            width: 4,
-            height: 4,
-            decoration: const BoxDecoration(
-              color: AppPallete.primary,
-              shape: BoxShape.circle,
-            ),
+  Widget _buildNavItem(IconData icon, bool isActive, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(
+            icon,
+            color: isActive
+                ? AppPallete.primary
+                : AppPallete.onSurfaceVariant.withOpacity(0.5),
+            size: 26,
           ),
-      ],
+          if (isActive)
+            Container(
+              margin: const EdgeInsets.only(top: 6),
+              width: 4,
+              height: 4,
+              decoration: const BoxDecoration(
+                color: AppPallete.primary,
+                shape: BoxShape.circle,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
