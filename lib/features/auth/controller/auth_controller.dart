@@ -139,6 +139,10 @@ class AuthController {
     }
   }
 
+  Stream<UserModel> userDataById(String userId){
+     return _authRepository.userData(userId);
+  }
+
   // ===== AUTH PERSISTENCE =====
   Future<void> initializeAuthPersistence() async {
     await _authRepository.initializeAuthPersistence();

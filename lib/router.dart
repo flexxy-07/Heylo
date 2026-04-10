@@ -16,7 +16,10 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return MaterialPageRoute(builder: (context) => const ChatsHomePage());
 
     case ActiveChatPage.routeName:
-      return MaterialPageRoute(builder: (context) => const ActiveChatPage());
+    final arguments = settings.arguments as Map<String, dynamic>;
+    final name = arguments['name'];
+    final uid = arguments['uid'];
+      return MaterialPageRoute(builder: (context) => ActiveChatPage(name: name, uid: uid));
 
     case UserProfilePage.routeName:
       return MaterialPageRoute(builder: (context) => const UserProfilePage());

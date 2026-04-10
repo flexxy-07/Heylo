@@ -11,7 +11,7 @@ import 'package:heylo/services/cloudinary_service.dart';
 class AuthRepository {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-  
+
   // Shared Preferences Keys
   static const String _userIdKey = 'user_id';
   static const String _userEmailKey = 'user_email';
@@ -89,21 +89,23 @@ class AuthRepository {
     required String name,
     required File? profilePic,
     required String bio,
-      required String phoneNumber,
+    required String phoneNumber,
 
-   // required ProviderRef ref,
-    
+    // required ProviderRef ref,
     required BuildContext context,
   }) async {
     try {
       print("🔥 saveUserDataToFirebase called");
-      
+
       final currentUser = _firebaseAuth.currentUser;
       if (currentUser == null) {
-        showSnackBar(context: context, message: "User is not authenticated. Please sign in again.");
+        showSnackBar(
+          context: context,
+          message: "User is not authenticated. Please sign in again.",
+        );
         return false;
       }
-      
+
       String uid = currentUser.uid;
       String photoUrl = '';
       String email = currentUser.email ?? '';
@@ -118,10 +120,10 @@ class AuthRepository {
       final normalizedPhoneNumber = phoneNumber.replaceAll(RegExp(r'\D'), '');
 
       await _firestore.collection('users').doc(uid).set({
-        'uid' : uid,
+        'uid': uid,
         'name': name,
-        'email' : email,
-        'bio' : bio,
+        'email': email,
+        'bio': bio,
         'profilePic': photoUrl,
         'createdAt': Timestamp.now(),
         'phoneNumber': normalizedPhoneNumber,
@@ -165,7 +167,7 @@ class AuthRepository {
   }
 
   // ===== USER STATE =====
-  User? getCurrentUser() {  
+  User? getCurrentUser() {
     return _firebaseAuth.currentUser;
   }
 
@@ -174,10 +176,13 @@ class AuthRepository {
   }
 
   Future<UserModel?> getCurrentUserData() async {
-    var userData = await _firestore.collection('users').doc(_firebaseAuth.currentUser?.uid).get();
+    var userData = await _firestore
+        .collection('users')
+        .doc(_firebaseAuth.currentUser?.uid)
+        .get();
 
     UserModel? user;
-    if(userData.data() != null){
+    if (userData.data() != null) {
       user = UserModel.fromMap(userData.data()!);
     }
     return user;
@@ -191,5 +196,11 @@ class AuthRepository {
     return _firebaseAuth.authStateChanges();
   }
 
-
+ Stream<UserModel> userData(String userId) {
+    return _firestore
+        .collection('users')
+        .doc(userId)
+        .snapshots()
+        .map((event) => UserModel.fromMap(event.data()!));
+  }
 }

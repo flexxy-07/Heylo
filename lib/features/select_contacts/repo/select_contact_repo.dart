@@ -37,7 +37,10 @@ void selectContact(Contact selectedContact, BuildContext context) async {
       String selectedPhoneNum = selectedContact.phones[0].number.replaceAll(" ", '');
       if(selectedPhoneNum == userData.phoneNumber){
         isFound = true;
-        Navigator.pushNamed(context, ActiveChatPage.routeName);
+        Navigator.pushNamed(context, ActiveChatPage.routeName, arguments: {
+          'name': userData.name,
+          'uid': userData.uid,
+        });
       }
 
     }
